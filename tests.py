@@ -460,7 +460,18 @@ class TestExtraCredit(AntTest):
             self.assertEqual('tunnel_0_4', bee.place.name,
                              'Status effects do not stack')
 
-
+	 def test_die_the_old_fashioned_way(self):
+		bee = ants.Bee(3)
+		queen = TestProblem9.queen
+		# The bee has an uninterrupted path to the heart of the colony
+		self.colony.places['tunnel_0_1'].add_insect(bee)
+		self.colony.places['tunnel_0_2'].add_insect(queen)
+		queen.action(self.colony)
+		bee.action(self.colony)
+		self.assertIs(False, len(self.colony.queen.bees) > 0, 'Game ended')
+		queen.action(self.colony)
+		bee.action(self.colony)
+		self.assertIs(True, len(self.colony.queen.bees) > 0, 'Game not ended')
 @main
 def main(*args):
     import argparse
